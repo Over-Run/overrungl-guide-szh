@@ -1,0 +1,22 @@
+site_name: OverrunGL 使用手册
+site_url: https://over-run.github.io/overrungl-guide-szh/
+repo_url: https://github.com/Over-Run/overrungl-guide-szh/
+edit_uri: 'edit/main/docs/'
+site_description: OverrunGL 使用手册
+site_author: Overrun Organization
+copyright: Copyright (c) 2023-present Overrun Organization, with CC0-1.0 License
+nav:
+  - 前言: index.md
+  - 模块:
+      - 核心: module/core.md
+      - GLFW: module/glfw.md
+      - JOML: module/joml.md
+      - GL: module/opengl.md
+      - STB: module/stb.md
+theme:
+  name: readthedocs
+  locale: zh_CN
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
