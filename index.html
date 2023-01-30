@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh_CN" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="OverrunGL 使用手册" /><meta name="author" content="Overrun Organization" /><link rel="canonical" href="https://over-run.github.io/overrungl-guide-szh/" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>OverrunGL 使用手册</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u524d\u8a00";
+        var mkdocs_page_input_path = "index.md";
+        var mkdocs_page_url = "/overrungl-guide-szh/";
+      </script>
+    
+    <script src="js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> OverrunGL 使用手册
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href=".">前言</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">简介</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">模块</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="module/core/">核心</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="module/glfw/">GLFW</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="module/joml/">JOML</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="module/opengl/">GL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="module/stb/">STB</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">OverrunGL 使用手册</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>前言</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Over-Run/overrungl-guide-szh/edit/main/docs/index.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="overrungl">OverrunGL 使用手册<a class="headerlink" href="#overrungl" title="Permanent link">&para;</a></h1>
+<p>为 <a href="https://github.com/Over-Run/overrungl">OverrunGL</a> 编写的使用手册。</p>
+<p>如果你认为本手册有问题，请创建一个 <a href="https://github.com/Over-Run/overrungl-guide-szh/issues">Issue</a>。<br />
+如果你在使用 OverrunGL 的过程中遇到问题，请发起新<a href="https://github.com/Over-Run/overrungl/discussions">讨论</a>。</p>
+<h2 id="_1">简介<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>OverrunGL 是使用 Java 20 编写的本机绑定库，提供了与 C 库交互的能力。</p>
+<p>OverrunGL 使用了最新的 <a href="https://openjdk.org/jeps/434">FFM API</a>，它使我们无需编写任何 C 代码即可调用本机库。</p>
+<p>OverrunGL 旨在令方法调用更类似于纯 Java。以下是一段 FFM API 与 GLFW 模块结合使用的例子：</p>
+<pre><code class="language-java">import java.lang.foreign.MemorySegment;
+// imports...
+
+class Example {
+    private static MemorySegment windowHandle;
+
+    public static void main(String[] args) {
+        // init...
+        try (Arena arena = Arena.openShared()) {
+            windowHandle = GLFW.createWindow(arena,
+                800,
+                600,
+                &quot;Example&quot;,
+                MemorySegment.NULL,
+                MemorySegment.NULL);
+        }
+        // ...terminate
+    }
+}
+</code></pre>
+<p>我们将在接下来的章节中详细讲解各个模块与本机交互的方式。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="module/core/" class="btn btn-neutral float-right" title="核心">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Copyright (c) 2023-present Overrun Organization, with CC0-1.0 License</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Over-Run/overrungl-guide-szh/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+      <span><a href="module/core/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '.';</script>
+    <script src="js/theme_extra.js" defer></script>
+    <script src="js/theme.js" defer></script>
+      <script src="search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.4.2
+Build Date UTC : 2023-01-30 14:55:32.424847+00:00
+-->

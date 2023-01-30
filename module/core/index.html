@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh_CN" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Overrun Organization" /><link rel="canonical" href="https://over-run.github.io/overrungl-guide-szh/module/core/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>核心 - OverrunGL 使用手册</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u6838\u5fc3";
+        var mkdocs_page_input_path = "module/core.md";
+        var mkdocs_page_url = "/overrungl-guide-szh/module/core/";
+      </script>
+    
+    <script src="../../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> OverrunGL 使用手册
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">前言</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">模块</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">核心</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#memorystack">MemoryStack</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#memoryutil">MemoryUtil</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#runtimehelper">RuntimeHelper</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#api-logger">API Logger</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#downcall-handle">Downcall Handle</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#toarray">toArray</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../glfw/">GLFW</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../joml/">JOML</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../opengl/">GL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../stb/">STB</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">OverrunGL 使用手册</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+          <li>模块 &raquo;</li>
+      <li>核心</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Over-Run/overrungl-guide-szh/edit/main/docs/module/core.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">核心模块<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p><strong>核心</strong> (Core) 模块，是 OverrunGL 各个模块的基础。</p>
+<p>我们为核心模块添加了以下基本 API：</p>
+<ul>
+<li><code>MemoryStack</code></li>
+<li><code>MemoryUtil</code></li>
+<li><code>RuntimeHelper</code></li>
+</ul>
+<p>除此之外，我们还添加了<code>Configurations</code>，供开发者设置内部参数。</p>
+<h2 id="memorystack">MemoryStack<a class="headerlink" href="#memorystack" title="Permanent link">&para;</a></h2>
+<p>由于目前 FFM API 并未提供栈操作 API，因此我们提供了与 LWJGL 相似的<code>MemoryStack</code>。</p>
+<p><code>MemoryStack</code>允许我们进行一次性、快速的小堆内存分配。例如，以下为 OpenGL 中常见的栈操作：</p>
+<pre><code class="language-c">unsigned int texture;
+glGenTextures(1, &amp;texture);
+// use the texture
+</code></pre>
+<p>显然在 Java 中我们没有指针，无法直接传入值类型修改内容。因此，我们需要借助<code>MemoryStack</code>完成以上操作：</p>
+<pre><code class="language-java">int texture;
+try (MemoryStack stack = MemoryStack.stackPush()) {
+    MemorySegment segment = stack.malloc(ValueLayout.JAVA_INT);
+    GL.genTextures(1, segment);
+    texture = segment.get(ValueLayout.JAVA_INT, 0);
+}
+// use the texture
+</code></pre>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>注意<code>ValueLayout.JAVA_INT</code>是 FFM API针对目前通用泛型尚未加入的情况下临时提出的解决方案，它的类型为<code>ValueLayout.OfInt</code>。<br />
+未来，通用泛型加入时，上面的代码可能会变成下面这样：</p>
+</div>
+<pre><code class="language-java">int texture;
+try (MemoryStack stack = MemoryStack.stackPush()) {
+    MemorySegment segment = stack.&lt;int&gt;malloc();
+    GL.genTextures(1, segment);
+    texture = segment.&lt;int&gt;get(0);
+}
+// use the texture
+</code></pre>
+<hr />
+<p><code>MemoryStack</code>还实现了<code>SegmentAllocator</code>，这意味着我们能够将<code>MemoryStack</code>直接传入参数。</p>
+<pre><code class="language-java">import java.lang.foreign.MemorySegment;
+// imports...
+
+class Example {
+    private static MemorySegment windowHandle;
+
+    public static void main(String[] args) {
+        // init...
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            // 请注意只有小堆内存才能使用 MemoryStack 分配，
+            // 如果字符串的长度超过了栈的大小会导致 OutOfMemoryError。
+            windowHandle = GLFW.createWindow(stack,
+                800,
+                600,
+                &quot;Example&quot;,
+                MemorySegment.NULL,
+                MemorySegment.NULL);
+        }
+        // ...terminate
+    }
+}
+</code></pre>
+<hr />
+<p><code>MemoryStack</code>默认大小可通过设置<code>Configurations.STACK_SIZE</code>修改。<code>STACK_SIZE</code>单位为KiB。</p>
+<p>调用<code>stackPush</code>时，每个线程会使用默认大小创建一个堆栈，或者复用之前的堆栈。</p>
+<p>使用<code>create(long)</code>显式指定创建堆栈的大小。</p>
+<p>通过设置<code>Configurations.DEBUG_STACK</code>，启用或禁用调试模式。此配置必须在首个<code>MemoryStack</code>创建前设置。</p>
+<h2 id="memoryutil">MemoryUtil<a class="headerlink" href="#memoryutil" title="Permanent link">&para;</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>尽管我们提供了<code>MemoryUtil</code>，但是除非非常需要性能，否则仍然推荐使用<code>Arena</code>。</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>使用<code>MemoryUtil</code>分配的内存必须显式释放，否则会造成内存泄露！<br />
+幸运的是，通过设置<code>Configurations.DEBUG_MEM_UTIL</code>，我们能够快速定位内存泄露位置。</p>
+</div>
+<p><code>MemoryUtil</code>是 C 标准内存分配函数的绑定，它的使用方法与 C 一致。</p>
+<pre><code class="language-java">// import static ...
+MemorySegment segment = malloc(ValueLayout.JAVA_LONG);
+// 正常情况下返回值不会为 NULL，此处仅作示例
+if (segment.address() == RuntimeHelper.NULL) {
+    throw new OutOfMemoryError();
+}
+segment.set(ValueLayout.JAVA_LONG, 0, 42L);
+System.out.println(segment.get(ValueLayout.JAVA_LONG, 0));
+// 重要！
+free(segment);
+</code></pre>
+<h2 id="runtimehelper">RuntimeHelper<a class="headerlink" href="#runtimehelper" title="Permanent link">&para;</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code>RuntimeHelper</code>为底层内容，如果你不知道自己在做什么，请跳过这一节。</p>
+</div>
+<h3 id="api-logger">API Logger<a class="headerlink" href="#api-logger" title="Permanent link">&para;</a></h3>
+<p>OverrunGL 内部使用名为<code>apiLogger</code>的<code>Consumer</code>来打印内部消息。</p>
+<p>要将<code>apiLogger</code>设置为你自己的 logger（例如 slf4j），使用以下代码：</p>
+<pre><code class="language-java">RuntimeHelper.setApiLogger(logger::warn);
+</code></pre>
+<h3 id="downcall-handle">Downcall Handle<a class="headerlink" href="#downcall-handle" title="Permanent link">&para;</a></h3>
+<p>FFM API将本机函数转换为<code>MethodHandle</code>以便我们在 Java 中调用。</p>
+<p>关于这部分的详细说明请见前言中链接的 JEP 页面。</p>
+<h3 id="toarray">toArray<a class="headerlink" href="#toarray" title="Permanent link">&para;</a></h3>
+<p><code>RuntimeHelper</code>提供了<code>toArray</code>方法及其重载。<code>toArray</code>将<code>MemorySegment</code>中的内容读取到数组中。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../.." class="btn btn-neutral float-left" title="前言"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../glfw/" class="btn btn-neutral float-right" title="GLFW">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Copyright (c) 2023-present Overrun Organization, with CC0-1.0 License</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Over-Run/overrungl-guide-szh/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../.." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../glfw/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme_extra.js" defer></script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

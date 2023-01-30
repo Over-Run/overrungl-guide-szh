@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://over-run.github.io/overrungl-guide-szh/</loc>
+         <lastmod>2023-01-30</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://over-run.github.io/overrungl-guide-szh/module/core/</loc>
+         <lastmod>2023-01-30</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://over-run.github.io/overrungl-guide-szh/module/glfw/</loc>
+         <lastmod>2023-01-30</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://over-run.github.io/overrungl-guide-szh/module/joml/</loc>
+         <lastmod>2023-01-30</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://over-run.github.io/overrungl-guide-szh/module/opengl/</loc>
+         <lastmod>2023-01-30</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://over-run.github.io/overrungl-guide-szh/module/stb/</loc>
+         <lastmod>2023-01-30</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+</urlset>
